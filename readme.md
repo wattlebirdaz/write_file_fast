@@ -1,6 +1,6 @@
-# 500MB write
+# 5M write
 
-500MB を 4K ずつ書き込むのにかかった時間を計測
+5M を 4K ずつ書き込み**逐一** fsync するのにかかった時間を計測
 
 ```sh
 g++ name.cpp
@@ -51,7 +51,7 @@ for i in {1..5}; do ./a.out; done;
 
 ## buffer write big
 
-500MB を 500MB 一気に書き込むのにかかった時間を計測
+5M を 5M 一気に書き込み、**一度** fsync するのにかかった時間を計測
 
 - buffer_write_big, time(ms) = 13
 - buffer_write_big, time(ms) = 7
@@ -59,9 +59,47 @@ for i in {1..5}; do ./a.out; done;
 - buffer_write_big, time(ms) = 6
 - buffer_write_big, time(ms) = 6
 
+## buffer write single fsync
+
+5M を 4K ずつ書き込み、**一度** fsync するのにかかった時間を計測
+
+- buffer_write_single_fsync, time(ms) = 15
+- buffer_write_single_fsync, time(ms) = 7
+- buffer_write_single_fsync, time(ms) = 7
+- buffer_write_single_fsync, time(ms) = 7
+- buffer_write_single_fsync, time(ms) = 7
+
+10G を 4K ずつ書き込み、**一度** fsync するのにかかった時間を計測
+
+- buffer_write_single_fsync, time(ms) = 10028
+- buffer_write_single_fsync, time(ms) = 12022
+- buffer_write_single_fsync, time(ms) = 12224
+- buffer_write_single_fsync, time(ms) = 12509
+- buffer_write_single_fsync, time(ms) = 12368
+
+## io_uring write single fsync
+
+5M を 4K ずつ書き込み、**一度** fsync するのにかかった時間を計測
+
+- iouring_write_single_fsync, time(ms) = 12
+- iouring_write_single_fsync, time(ms) = 3
+- iouring_write_single_fsync, time(ms) = 3
+- iouring_write_single_fsync, time(ms) = 3
+- iouring_write_single_fsync, time(ms) = 3
+
+10G を 4K ずつ書き込み、**一度** fsync するのにかかった時間を計測
+
+- iouring_write_single_fsync, time(ms) = 507
+- iouring_write_single_fsync, time(ms) = 464
+- iouring_write_single_fsync, time(ms) = 469
+- iouring_write_single_fsync, time(ms) = 479
+- iouring_write_single_fsync, time(ms) = 491
+
 # 考察
 
 - chunk にわけて書き込む場合 overwrite が一番早い
 - fallocate を使うと通常の buffer write より**少し**早くなる
 - fallocate の filling zero option がどれくらい効いているのかは不明
-- write system call の数は少なければ少ないほどよい
+- fsync の数は少なければ少ないほどはやい
+- write の数は大きな影響はなさそう
+- io_uring はめちゃくちゃはやい

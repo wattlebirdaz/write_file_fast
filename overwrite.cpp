@@ -10,6 +10,7 @@
 #include <cstdlib>
 
 /*
+[file_size = 5M]
 overwrite, time(ms) = 2562
 overwrite, time(ms) = 2647
 overwrite, time(ms) = 2614
@@ -22,7 +23,7 @@ int main() {
     int fd = fileno(file);
     assert(fd != -1);
     int block_size = 4 << 10; // 4K
-    int file_size = 5 << 20; // 500M
+    int file_size = 5 << 20; // 5M
 
     std::vector<char> buf(block_size);
     char val = '0';

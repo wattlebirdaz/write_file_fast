@@ -10,11 +10,12 @@
 #include <cstdlib>
 
 /*
-buffer_write, time(ms) = 4448
-buffer_write, time(ms) = 4493
-buffer_write, time(ms) = 4436
-buffer_write, time(ms) = 4468
-buffer_write, time(ms) = 4410
+[file_size = 5M]
+buffer_write_big, time(ms) = 15
+buffer_write_big, time(ms) = 7
+buffer_write_big, time(ms) = 6
+buffer_write_big, time(ms) = 7
+buffer_write_big, time(ms) = 6
 */
 
 int main() {
@@ -22,7 +23,7 @@ int main() {
     int fd = fileno(file);
     assert(fd != -1);
     
-    int file_size = 5 << 20; // 500M
+    int file_size = 5 << 20; // 5M
     int block_size = file_size;
 
     std::vector<char> buf(file_size);

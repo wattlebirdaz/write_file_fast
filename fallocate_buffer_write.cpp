@@ -10,14 +10,14 @@
 #include <cstdlib>
 
 /* 
-[file_size = 500M]
+[file_size = 5M]
 fallocate_buffer_write, time(ms) = 4252
 fallocate_buffer_write, time(ms) = 4312
 fallocate_buffer_write, time(ms) = 4333
 fallocate_buffer_write, time(ms) = 4246
 fallocate_buffer_write, time(ms) = 4230
 
-[file_size = 1G]
+[file_size = 10M]
 fallocate_buffer_write, time(ms) = 8413
 fallocate_buffer_write, time(ms) = 8424
 fallocate_buffer_write, time(ms) = 8603
@@ -30,7 +30,7 @@ int main() {
     int fd = fileno(file);
     assert(fd != -1);
     int block_size = 4 << 10; // 4K
-    int file_size = 5 << 20; // 500M
+    int file_size = 5 << 20; // 5M
     fallocate(fd, 0, 0, file_size);
 
     std::vector<char> buf(block_size);
