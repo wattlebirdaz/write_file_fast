@@ -4,7 +4,7 @@
 
 ```sh
 g++ name.cpp
-./a.out
+for i in {1..5}; do ./a.out; done;
 ```
 
 `Intel(R) Core(TM) i9-9900 CPU @ 3.10GHz`
