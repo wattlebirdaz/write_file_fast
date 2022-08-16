@@ -77,24 +77,6 @@ for i in {1..5}; do ./a.out; done;
 - buffer_write_single_fsync, time(ms) = 12509
 - buffer_write_single_fsync, time(ms) = 12368
 
-## io_uring write single fsync
-
-5M を 4K ずつ書き込み、**一度** fsync するのにかかった時間を計測
-
-- iouring_write_single_fsync, time(ms) = 12
-- iouring_write_single_fsync, time(ms) = 3
-- iouring_write_single_fsync, time(ms) = 3
-- iouring_write_single_fsync, time(ms) = 3
-- iouring_write_single_fsync, time(ms) = 3
-
-10G を 4K ずつ書き込み、**一度** fsync するのにかかった時間を計測
-
-- iouring_write_single_fsync, time(ms) = 507
-- iouring_write_single_fsync, time(ms) = 464
-- iouring_write_single_fsync, time(ms) = 469
-- iouring_write_single_fsync, time(ms) = 479
-- iouring_write_single_fsync, time(ms) = 491
-
 # 考察
 
 - chunk にわけて書き込む場合 overwrite が一番早い
@@ -102,4 +84,3 @@ for i in {1..5}; do ./a.out; done;
 - fallocate の filling zero option がどれくらい効いているのかは不明
 - fsync の数は少なければ少ないほどはやい
 - write の数は大きな影響はなさそう
-- io_uring はめちゃくちゃはやい
